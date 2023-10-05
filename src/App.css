@@ -1,10 +1,43 @@
 .App {
   text-align: center;
+  position: relative;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+/* .leaflet-routing-alt{
+  background-color: white;
+  display: none;
+}  */
+path{
+  stroke: #00bdff;
+}
+.leaflet-routing-container {
+  display: none;
+}
+.leaflet-marker-icon[src="car.png"]{
+  z-index: 100;
+}
+.menubar{
+  position: absolute;
+  bottom: 20px;
+  left: 35%;
+  right: 35%;
+  padding: 20px;
+  background-color: #131c205b;
+  border-radius: 36px;
+  z-index: 1000;
+}
+
+.menubar button{
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #00bdff;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
