@@ -12,7 +12,7 @@ const pointMarkers: Marker[] = []
 const carIcon = L.icon({ iconUrl: 'navigation.png', iconSize: [25, 25] })
 const dashIcon = L.icon({
   iconUrl: 'point.png',
-  iconSize: [5, 5],
+  iconSize: [8, 8],
 })
 let carMarker: Marker | null
 let lastIndex: number = 0
@@ -85,6 +85,7 @@ function onRoutesFound(
       carMarker = new L.Marker(coordinates[i], { icon: carIcon }).addTo(map)
     } else {
       carMarker.setLatLng(coordinates[i])
+      map.setView(coordinates[i])
     }
     i++
     lastIndex = i
