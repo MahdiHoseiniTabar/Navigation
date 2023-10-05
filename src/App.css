@@ -7,12 +7,9 @@
   height: 40vmin;
   pointer-events: none;
 }
-/* .leaflet-routing-alt{
-  background-color: white;
-  display: none;
-}  */
+
 path{
-  stroke: #00bdff;
+  stroke: #ae02fe;
 }
 .leaflet-routing-container {
   display: none;
