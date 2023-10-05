@@ -15,15 +15,19 @@ const dashIcon = L.icon({
   iconSize: [5, 5],
 })
 let carMarker: Marker | null
+let lastIndex: number = 0
 
 function Navigation() {
   const map = useMap()
   const [toggle, setToggle] = useState(false)
-
+  const [index, setIndex] = useState(0)
+  const [isPlay, setPlay] = useState(true)
+  console.log(index)
   const [waypoints, setWaypoints] = useState([
     new L.Routing.Waypoint(L.latLng(35.734298, 51.303879), 'start', {}),
     new L.Routing.Waypoint(L.latLng(35.714298, 51.383879), 'end', {}),
   ])
+
   const instance = L.Routing.control({
     waypoints,
   })
@@ -33,13 +37,20 @@ function Navigation() {
   useEffect(() => {
     return () => {
       setWaypoints(instance.getWaypoints())
+      resetOldRoutes()
     }
-  }, [])
+  }, [toggle])
+
+  useEffect(() => {
+    return () => {
+      setIndex(lastIndex)
+    }
+  }, [isPlay])
 
   instance.on('routesfound', (e) => {
     const routes: L.Routing.IRoute[] = e.routes
     resetOldRoutes()
-    onRoutesFound(routes[0].coordinates, map)
+    onRoutesFound(routes[0].coordinates, map, index, isPlay)
   })
   return (
     <div className="menubar">
@@ -50,14 +61,27 @@ function Navigation() {
       >
         {toggle ? 'Hide Points' : 'Show Points'}
       </button>
+      <button
+        onClick={() => {
+          setPlay(!isPlay)
+        }}
+      >
+        {isPlay ? 'pause' : 'play'}
+      </button>
     </div>
   )
 }
-function onRoutesFound(coordinates: L.LatLng[] | undefined, map: L.Map) {
-  let i = 0
+function onRoutesFound(
+  coordinates: L.LatLng[] | undefined,
+  map: L.Map,
+  index: number,
+  isPlay: boolean
+) {
+  console.log('on: ', isPlay)
+  let i = index
 
   const interval = setInterval(() => {
-    if (!coordinates) {
+    if (!coordinates || !isPlay) {
       return
     }
     currentCoordinates = coordinates
@@ -65,11 +89,12 @@ function onRoutesFound(coordinates: L.LatLng[] | undefined, map: L.Map) {
       clearInterval(interval)
     }
     if (!carMarker) {
-      carMarker = new L.Marker(coordinates[0], { icon: carIcon }).addTo(map)
+      carMarker = new L.Marker(coordinates[i], { icon: carIcon }).addTo(map)
     } else {
       carMarker.setLatLng(coordinates[i])
     }
     i++
+    lastIndex = i
   }, 200)
   intervals.push(interval)
 }

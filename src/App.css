@@ -38,6 +38,7 @@ path{
   color: white;
   font-weight: bold;
   font-size: 16px;
+  margin: auto 8px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
